@@ -1,0 +1,6 @@
+/.idea
+*.log
+*.log.*
+/dist
+/node_modules
+aws.config.json
