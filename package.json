@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "webpack-dev-server --hot --inline",
     "prod": "NODE_ENV='production' webpack -p",
-    "test": "mocha --compilers js:babel-core/register --recursive ./tests",
+    "test": "phantomjs ./test/first.test.js http://localhost:8080",
     "test:watch": "npm run test -- --watch"
   },
   "repository": {
@@ -36,6 +36,7 @@
     "extract-text-webpack-plugin": "^2.1.0",
     "method-override": "^2.3.8",
     "mocha": "^3.2.0",
+    "phantomjs": "^2.1.7",
     "webpack": "^2.2.1",
     "webpack-dev-middleware": "^1.10.1",
     "webpack-dev-server": "^2.4.2",

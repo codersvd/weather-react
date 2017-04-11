@@ -13,23 +13,34 @@ export class Cities extends React.Component {
                 "Berlin",
                 "Voronezh"
             ],
+            connect: null,
             componentInfo: null
         };
         this.handlerChangeCity = this.handlerChangeCity.bind(this);
     }
 
     getWeather(city) {
-        let api = new Api();
-        api.getData(city || this.state.currentCity).then(res => {
-            this.setState({componentInfo: res, error: null});
-        }).catch(err=>{
-            this.setState({error: "Nothing found"});
-        });
+        if(window.navigator.onLine) {
+            this.setState({connect: null});
+            let api = new Api();
+            api.getData(city || this.state.currentCity).then(res => {
+                this.setState({componentInfo: res, error: null});
+            }).catch(err => {
+                this.setState({error: "Nothing found"});
+            });
+        }
+        else {
+            this.setState({connect: "No network connection"});
+        }
     }
 
     componentDidMount(){
         this.getWeather(this.state.cities[0]);
-        setInterval(()=>this.getWeather(this.state.componentInfo.city || this.state.cities[0]), 30000);
+        this.timer = setInterval(()=>this.getWeather(this.state.componentInfo.city || this.state.cities[0]), 30000);
+    }
+
+    componentWillUnmount(){
+        clearInterval(this.timer);
     }
 
     handlerChangeCity(event) {
@@ -39,6 +50,7 @@ export class Cities extends React.Component {
     render() {
         return (
             <div className="blockWeather">
+                {this.state.connect ? <div className="noNetwork">{this.state.connect}</div> : ""}
                 <form id="select_city">
                     <label htmlFor="">Select City: </label>
                     <div className="selectWrap">
