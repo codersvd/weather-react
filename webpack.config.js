@@ -2,6 +2,7 @@ const env = process.env.NODE_ENV || "dev";
 const autoprefixer = require("autoprefixer");
 const extractText = require('extract-text-webpack-plugin');
 const HtmlPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
 const extractCss = new extractText({
     filename: "assets/styles.css",
 });
@@ -16,7 +17,7 @@ const srcDir = __dirname + "/src";
 const distDir = __dirname + "/dist";
 
 module.exports = {
-    devtool: env === "dev" ? "source-map" : null,
+    devtool: env === "dev" ? "source-map" : false,
     context: srcDir,
     entry: [
         "./app.js"
@@ -64,19 +65,13 @@ module.exports = {
 };
 
 if(env === "production") {
-    modules.exports.plugins.push(
+    module.exports.plugins.push(
         new webpack.optimize.UglifyJsPlugin({
             compress: {
                 warnings: false,
                 drop_console: true,
                 unsafe: true
             }
-        }),
-        new OptimizeCssAssetsPlugin({
-            assetNameRegExp: /.*\.css$/g,
-            cssProcessor: require('cssnano'),
-            cssProcessorOptions: { discardComments: { removeAll: true } },
-            canPrint: true
         })
     );
 }
