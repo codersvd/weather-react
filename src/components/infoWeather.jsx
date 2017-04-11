@@ -32,9 +32,11 @@ export class InfoView extends React.Component {
         return(
             <div className="info">
                 <h2>Weather in {this.state.city}</h2>
-                <div className="icon"><img src={this.state.icon} alt={this.state.weather.description}/></div>
+                <div className="icon">
+                    <img src={this.state.icon} alt={this.state.weather.description}/>
+                    <div className="mainWeather">{this.state.weather.description}</div>
+                </div>
                 <ul>
-                    <li>{this.state.weather.description}</li>
                     <li>Tem. current <span>{this.typeTempC(this.state.currentWeather.temp)} &deg;C</span></li>
                     <li>Tem. min/max
                         <span className="tempMin">{this.typeTempC(this.state.currentWeather.temp_min)} &deg;C</span>
