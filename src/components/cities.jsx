@@ -12,49 +12,41 @@ export class Cities extends React.Component {
                 "Berlin",
                 "Voronezh"
             ],
-            currentCity: null,
             componentInfo: null
         };
         this.handlerChangeCity = this.handlerChangeCity.bind(this);
     }
 
-    getWeather() {
+    getWeather(city) {
         let api = new Api();
-        api.getData(this.state.currentCity).then(res => {
+        api.getData(city || this.state.currentCity).then(res => {
             this.setState({componentInfo: res});
         });
     }
 
-    componentWillMount() {
-        this.setState({currentCity: this.state.cities[0]});
-    }
     componentDidMount(){
-        this.getWeather();
+        this.getWeather(this.state.cities[0]);
+        setInterval(()=>this.getWeather(this.state.componentInfo.city || this.state.cities[0]), 30000);
     }
 
     handlerChangeCity(event) {
-        this.setState({currentCity: event.target.value});
-        this.getWeather();
+        this.getWeather(event.target.value);
     }
 
     render() {
-        let infoBlock = null;
-        if(this.state.componentInfo) {
-            infoBlock = <InfoView allInfo={this.state.componentInfo}/>
-        }
-        else {
-            infoBlock = "";
-        }
         return (
             <div className="blockWeather">
-                <form>
-                    <select onChange={this.handlerChangeCity}>
-                        {this.state.cities.map((current, index) => {
-                            return <option value={current} key={index}>{current}</option>
-                        })}
-                    </select>
+                <form id="select_city">
+                    <label htmlFor="">Select City: </label>
+                    <div className="selectWrap">
+                        <select onChange={this.handlerChangeCity}>
+                            {this.state.cities.map((current, index) => {
+                                return <option value={current} key={index}>{current}</option>
+                            })}
+                        </select>
+                    </div>
                 </form>
-                {infoBlock}
+                {this.state.componentInfo ? <InfoView allInfo={this.state.componentInfo}/> : ""}
             </div>
         )
     }

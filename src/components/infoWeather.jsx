@@ -3,25 +3,45 @@ import  React from "react";
 export class InfoView extends React.Component {
     constructor(props){
         super(props);
-        console.log(props.allInfo);
-        this.weather = props.allInfo.weather;
-        this.currentWeather = props.allInfo.mainInfo;
-        this.city = props.allInfo.city;
-        this.wind = props.allInfo.wind;
-        this.icon = props.allInfo.icon;
+
+        this.state= {
+            weather: props.allInfo.weather[0],
+            currentWeather: props.allInfo.mainInfo,
+            city: props.allInfo.city,
+            wind: props.allInfo.wind,
+            icon: props.allInfo.icon
+        };
+
+    }
+
+    typeTempC(temp){
+        return Math.round(temp-273.15);
+    }
+
+    componentWillReceiveProps(nextProps){
+        this.setState({
+            weather: nextProps.allInfo.weather[0],
+            currentWeather: nextProps.allInfo.mainInfo,
+            city: nextProps.allInfo.city,
+            wind: nextProps.allInfo.wind,
+            icon: nextProps.allInfo.icon
+        });
     }
 
     render(){
         return(
             <div className="info">
-                <h2>Weather in {this.city}</h2>
-                <div className="icon"><img src={this.icon} alt={this.weather.description}/></div>
+                <h2>Weather in {this.state.city}</h2>
+                <div className="icon"><img src={this.state.icon} alt={this.state.weather.description}/></div>
                 <ul>
-                    <li>Tem. current <span>{this.currentWeather.temp}</span></li>
-                    <li>Tem. min/max <span className="tempMin">{this.currentWeather.temp_min}</span> <span className="tempMax">{this.currentWeather.temp_max}</span></li>
-                    <li>Pressure {this.currentWeather.pressure} hpa</li>
-                    <li>Humidity {this.currentWeather.humidity} %</li>
-                    <li>Wind {this.wind.speed} m/s</li>
+                    <li>{this.state.weather.description}</li>
+                    <li>Tem. current <span>{this.typeTempC(this.state.currentWeather.temp)} &deg;C</span></li>
+                    <li>Tem. min/max
+                        <span className="tempMin">{this.typeTempC(this.state.currentWeather.temp_min)} &deg;C</span>
+                        <span className="tempMax">{this.typeTempC(this.state.currentWeather.temp_max)} &deg;C</span></li>
+                    <li>Pressure <span>{this.state.currentWeather.pressure} hpa</span></li>
+                    <li>Humidity <span>{this.state.currentWeather.humidity} %</span></li>
+                    <li>Wind <span>{this.state.wind.speed} m/s</span></li>
                 </ul>
             </div>
         );
