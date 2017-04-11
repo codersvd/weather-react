@@ -6,6 +6,7 @@ export class Cities extends React.Component {
     constructor(props) {
         super();
         this.state = {
+            error: null,
             cities: [
                 "London",
                 "Moscow",
@@ -20,7 +21,9 @@ export class Cities extends React.Component {
     getWeather(city) {
         let api = new Api();
         api.getData(city || this.state.currentCity).then(res => {
-            this.setState({componentInfo: res});
+            this.setState({componentInfo: res, error: null});
+        }).catch(err=>{
+            this.setState({error: "Nothing found"});
         });
     }
 
@@ -46,7 +49,7 @@ export class Cities extends React.Component {
                         </select>
                     </div>
                 </form>
-                {this.state.componentInfo ? <InfoView allInfo={this.state.componentInfo}/> : ""}
+                { !this.state.error ? (this.state.componentInfo ? <InfoView allInfo={this.state.componentInfo}/> : "") : <div className="error">{this.state.error}</div> }
             </div>
         )
     }

@@ -13,7 +13,7 @@ class Api {
         return fetch(mainLink)
             .then(res => {
                 if (res.status >= 400)
-                    throw new Error("Api for send sms is not access");
+                    throw new Error("Server error");
                 return res.text();
             })
             .then(res=>{
