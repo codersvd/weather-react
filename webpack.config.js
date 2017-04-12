@@ -25,7 +25,7 @@ module.exports = {
     output: {
         filename: "assets/bundle.js",
         path: distDir,
-        publicPath: '/'
+        publicPath: ''
     },
     module: {
         rules: [

@@ -14,6 +14,7 @@ export class Cities extends React.Component {
                 "Voronezh"
             ],
             connect: null,
+            load: "Loading...",
             componentInfo: null
         };
         this.handlerChangeCity = this.handlerChangeCity.bind(this);
@@ -24,7 +25,7 @@ export class Cities extends React.Component {
             this.setState({connect: null});
             let api = new Api();
             api.getData(city || this.state.currentCity).then(res => {
-                this.setState({componentInfo: res, error: null});
+                this.setState({componentInfo: res, error: null, load: null});
             }).catch(err => {
                 this.setState({error: "Nothing found"});
             });
@@ -61,7 +62,7 @@ export class Cities extends React.Component {
                         </select>
                     </div>
                 </form>
-                { !this.state.error ? (this.state.componentInfo ? <InfoView allInfo={this.state.componentInfo}/> : "") : <div className="error">{this.state.error}</div> }
+                { this.state.error ? <div className="error">{this.state.error}</div> : (!this.state.load ? <InfoView allInfo={this.state.componentInfo}/> : this.state.load) }
             </div>
         )
     }

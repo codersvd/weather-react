@@ -4,6 +4,8 @@ export class InfoView extends React.Component {
     constructor(props){
         super(props);
 
+        console.log(props);
+
         this.state= {
             weather: props.allInfo.weather[0],
             currentWeather: props.allInfo.mainInfo,
